@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-menta: #a9e8d4;
+  --color-lilas: #b8c8ff;
+  --color-amarelo: #ffd87e;
+  --color-rosa: #ffb5c8;
+  --color-creme: #f6f3e9;
+  --color-tinta: #2b2d42;
+  --color-tinta-suave: #4a4e69;
+  --font-sans: 'Nunito', system-ui, sans-serif;
+  --font-display: 'Baloo 2', 'Nunito', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-creme);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--color-tinta);
+}
+
+.card {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 0 rgba(43, 45, 66, 0.08), 0 10px 30px rgba(43, 45, 66, 0.06);
+  border: 2px solid rgba(43, 45, 66, 0.06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-tinta);
+  box-shadow: 0 4px 0 var(--color-tinta);
+  background: var(--color-amarelo);
+  color: var(--color-tinta);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--color-tinta);
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--color-tinta);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-ghost {
+  background: #fff;
+}
+.btn-menta {
+  background: var(--color-menta);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-tinta);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-in {
+  animation: pageIn 0.35s ease-out both;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+.floaty {
+  animation: floaty 3s ease-in-out infinite;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.pop {
+  animation: pop 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
