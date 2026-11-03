@@ -2,9 +2,11 @@ import { FlaskConical, Library, Sparkles } from 'lucide-react'
 import { ACTIVITIES } from '../data/activities'
 import { MoviSays } from '../components/ui'
 import { useApp } from '../state'
+import PremiumHome from './PremiumHome'
 
 export default function Home() {
-  const { go, teen } = useApp()
+  const { go, teen, mode } = useApp()
+  if (mode === 'premium') return <PremiumHome />
   return (
     <div>
       <section className="rounded-[2rem] border-2 border-tinta p-6 sm:p-10 text-center text-tinta bg-gradient-to-br from-menta via-creme to-lilas shadow-[0_6px_0_#2b2d42]">

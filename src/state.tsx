@@ -49,11 +49,14 @@ function pageFromHash(): PageId {
   return (PAGES as string[]).includes(h) ? (h as PageId) : 'home'
 }
 
-function teenFromUrl(): boolean {
+export type Mode = 'classic' | 'teen' | 'premium'
+
+function modeFromUrl(): Mode {
   try {
-    return new URLSearchParams(window.location.search).get('modo') === 'teen'
+    const m = new URLSearchParams(window.location.search).get('modo')
+    return m === 'teen' || m === 'premium' ? m : 'classic'
   } catch {
-    return false
+    return 'classic'
   }
 }
 
@@ -72,6 +75,9 @@ interface Ctx {
   /** Modo Teen: visual neon e gamificação (XP, níveis, conquistas). */
   teen: boolean
   setTeen: (v: boolean) => void
+  /** Versão visual do site: clássica, Teen (neon + jogo) ou Premium (app clean). */
+  mode: Mode
+  setMode: (m: Mode) => void
   xp: number
   keys: string[]
   /** Dá XP uma única vez por chave. Chamadas repetidas são ignoradas. */
@@ -88,7 +94,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [profile, setProfileState] = useState<Profile | null>(null)
   const [age, setAge] = useState<number | null>(null)
   const [weight, setWeight] = useState<number | null>(null)
-  const [teen, setTeen] = useState<boolean>(teenFromUrl)
+  const [mode, setMode] = useState<Mode>(modeFromUrl)
+  const teen = mode === 'teen'
+  const setTeen = (v: boolean) => setMode(v ? 'teen' : 'classic')
   const [xp, setXp] = useState(0)
   const [keys, setKeys] = useState<string[]>([])
   const [toast, setToast] = useState<string | null>(null)
@@ -102,7 +110,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.teen = teen ? 'true' : 'false'
-  }, [teen])
+    document.documentElement.dataset.mode = mode
+  }, [teen, mode])
 
   useEffect(() => {
     if (!toast) return
@@ -151,7 +160,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   return (
     <AppCtx.Provider
-      value={{ page, go, profile, setProfile, age, setAge, ageGroup, weight, setWeight, restart, teen, setTeen, xp, keys, award, toast, burst, celebrate }}
+      value={{ page, go, profile, setProfile, age, setAge, ageGroup, weight, setWeight, restart, teen, setTeen, mode, setMode, xp, keys, award, toast, burst, celebrate }}
     >
       {children}
     </AppCtx.Provider>

@@ -48,6 +48,7 @@ function Choice<T extends string>({
 
 function PlayerCard({ profile, teen }: { profile: Profile_; teen: boolean }) {
   const [copied, setCopied] = useState(false)
+  const { mode } = useApp()
   const arch = ARCHETYPE[profile.goal]
   const top = recommend(profile)[0].activity
   const text = `Meu personagem Move+: ${arch.name} ${arch.emoji}. Superpoder: ${arch.power}. Combo ideal: ${top.name} ${top.emoji}. Descubra o seu: https://miriadms21-wq.github.io/move-plus/`
@@ -64,8 +65,8 @@ function PlayerCard({ profile, teen }: { profile: Profile_; teen: boolean }) {
     <div className="mt-6 flex flex-col items-center">
       <div className="player-card pop w-72 rounded-3xl border-4 border-tinta p-5 text-tinta text-left shadow-[0_8px_0_#2b2d42]" aria-label="Carta do seu personagem Move+">
         <div className="flex justify-between text-xs font-extrabold uppercase tracking-wider">
-          <span>Move+ · Carta de jogador</span>
-          <span>{teen ? '★★★' : '★'}</span>
+          <span>{mode === 'premium' ? 'Move+ · Cartão de perfil' : 'Move+ · Carta de jogador'}</span>
+          <span>{teen ? '★★★' : ''}</span>
         </div>
         <div className="my-3 grid place-items-center rounded-2xl border-2 border-tinta bg-white/70 py-5 text-7xl">{arch.emoji}</div>
         <h2 className="text-2xl font-extrabold leading-tight">{arch.name}</h2>
