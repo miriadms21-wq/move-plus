@@ -39,7 +39,15 @@ function Select({ label, value, onChange }: { label: string; value: ActivityId; 
 }
 
 export default function Lab() {
-  const { ageGroup, weight } = useApp()
+  const { ageGroup, weight, award } = useApp()
+  const pickA = (v: ActivityId) => {
+    setA1(v)
+    award('duelo', 30, 'Duelo de atividades')
+  }
+  const pickB = (v: ActivityId) => {
+    setA2(v)
+    award('duelo', 30, 'Duelo de atividades')
+  }
   const [a1, setA1] = useState<ActivityId>('danca')
   const [a2, setA2] = useState<ActivityId>('futebol')
   const [inten, setInten] = useState<Intensity>('moderada')
@@ -78,10 +86,10 @@ export default function Lab() {
       <PageHeader title="Laboratório do movimento" subtitle="Compare, experimente e descubra." />
 
       <section className="card p-5" aria-labelledby="comparador">
-        <h2 id="comparador" className="text-2xl font-extrabold mb-3">🔬 Comparador de atividades</h2>
+        <h2 id="comparador" className="text-2xl font-extrabold mb-3">🔬 Comparador de atividades <span className="text-base">(duelo!)</span></h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <Select label="Atividade A" value={a1} onChange={setA1} />
-          <Select label="Atividade B" value={a2} onChange={setA2} />
+          <Select label="Atividade A" value={a1} onChange={pickA} />
+          <Select label="Atividade B" value={a2} onChange={pickB} />
         </div>
 
         <div className="mt-4 h-72" role="img" aria-label="Gráfico de barras comparando as duas atividades em cinco características">
@@ -163,10 +171,10 @@ export default function Lab() {
           <>
             <div className="mt-4 h-72" role="img" aria-label="Gráfico de linhas: energia estimada por tempo em cada intensidade">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={lineData} margin={{ left: -10, right: 16 }}>
+                <LineChart data={lineData} margin={{ left: 0, right: 16 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="min" unit=" min" />
-                  <YAxis unit=" kcal" width={70} />
+                  <YAxis unit=" kcal" width={82} tick={{ fontSize: 12 }} />
                   <Tooltip />
                   <Legend />
                   {INTENSITIES.filter((i) => X.mets[i]).map((i) => (

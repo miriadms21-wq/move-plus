@@ -1,7 +1,13 @@
+import { useEffect } from 'react'
 import { ACTIVITIES, INTENSITIES, INTENSITY_LABEL } from '../data/activities'
+import { useApp } from '../state'
 import { NavButtons, Notice, PageHeader } from '../components/ui'
 
 export default function Sources() {
+  const { award } = useApp()
+  useEffect(() => {
+    award('fontes', 20, 'Fontes lidas')
+  }, [award])
   return (
     <div className="page-in">
       <PageHeader title="Fontes e metodologia" subtitle="De onde vêm os números do Move+ e quais são os limites." />

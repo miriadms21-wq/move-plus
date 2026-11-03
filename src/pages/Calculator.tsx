@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Info } from 'lucide-react'
 import {
@@ -17,7 +17,7 @@ import { useApp } from '../state'
 const fmt = (n: number) => n.toLocaleString('pt-BR', { maximumFractionDigits: 0 })
 
 export default function Calculator() {
-  const { ageGroup, weight } = useApp()
+  const { ageGroup, weight, award } = useApp()
   const [id, setId] = useState<ActivityId>('corrida')
   const [inten, setInten] = useState<Intensity>('moderada')
   const [minutes, setMinutes] = useState(30)
@@ -33,6 +33,11 @@ export default function Calculator() {
   const res = ageGroup ? estimate({ activity: id, intensity: inten, minutes, weightKg: weight, ageGroup }) : null
   const isYouth = ageGroup === 'crianca' || ageGroup === 'adolescente'
   const entry = act.mets[inten]
+  const calcDone = res?.kind === 'ok' || (isYouth && !!entry)
+
+  useEffect(() => {
+    if (calcDone) award('calc', 30, 'Cálculo feito')
+  }, [calcDone, award])
 
   const chartData =
     res && res.kind === 'ok' && weight
@@ -132,7 +137,7 @@ export default function Calculator() {
               <div className="font-bold text-sm">minutos</div>
             </div>
             <div className="rounded-2xl p-3 border-2 border-tinta bg-creme">
-              <div className="text-xl font-extrabold mt-1">{INTENSITY_LABEL[inten]}</div>
+              <div className="text-base sm:text-xl font-extrabold mt-1">{INTENSITY_LABEL[inten]}</div>
               <div className="font-bold text-sm">intensidade</div>
             </div>
           </div>
@@ -155,10 +160,10 @@ export default function Calculator() {
                 </div>
                 <div className="mt-4 h-56" role="img" aria-label="Gráfico de barras com a estimativa de energia por intensidade">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+                    <BarChart data={chartData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="name" tick={{ fontWeight: 700 }} />
-                      <YAxis unit=" kcal" width={70} />
+                      <YAxis unit=" kcal" width={82} tick={{ fontSize: 12 }} />
                       <Tooltip formatter={(v) => [`${v} kcal`, 'Estimativa']} />
                       <Bar dataKey="kcal" radius={[10, 10, 0, 0]} animationDuration={600}>
                         {chartData.map((d) => (

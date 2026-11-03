@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { AGE_LABEL, ageGroupOf } from '../data/activities'
 import { MoviSays, PageHeader } from '../components/ui'
-import { useApp, type AdaptNeed, type Experience, type Goal, type IntensityPref, type SocialPref } from '../state'
+import { ARCHETYPE } from '../lib/game'
+import { recommend } from '../lib/recommend'
+import { useApp, type Profile as Profile_, type AdaptNeed, type Experience, type Goal, type IntensityPref, type SocialPref } from '../state'
 
 const ADAPT_OPTIONS = [
   'Atividades de baixo impacto nas articulações',
@@ -44,8 +46,50 @@ function Choice<T extends string>({
   )
 }
 
+function PlayerCard({ profile, teen }: { profile: Profile_; teen: boolean }) {
+  const [copied, setCopied] = useState(false)
+  const arch = ARCHETYPE[profile.goal]
+  const top = recommend(profile)[0].activity
+  const text = `Meu personagem Move+: ${arch.name} ${arch.emoji}. Superpoder: ${arch.power}. Combo ideal: ${top.name} ${top.emoji}. Descubra o seu: https://miriadms21-wq.github.io/move-plus/`
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.prompt('Copie o texto abaixo:', text)
+    }
+  }
+  return (
+    <div className="mt-6 flex flex-col items-center">
+      <div className="player-card pop w-72 rounded-3xl border-4 border-tinta p-5 text-tinta text-left shadow-[0_8px_0_#2b2d42]" aria-label="Carta do seu personagem Move+">
+        <div className="flex justify-between text-xs font-extrabold uppercase tracking-wider">
+          <span>Move+ · Carta de jogador</span>
+          <span>{teen ? '★★★' : '★'}</span>
+        </div>
+        <div className="my-3 grid place-items-center rounded-2xl border-2 border-tinta bg-white/70 py-5 text-7xl">{arch.emoji}</div>
+        <h2 className="text-2xl font-extrabold leading-tight">{arch.name}</h2>
+        <p className="font-bold text-sm">Superpoder: {arch.power}</p>
+        <div className="mt-3 rounded-xl border-2 border-tinta bg-white/70 p-2 text-sm font-bold">
+          Combo ideal: {top.emoji} {top.name}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1">
+          {top.benefits.slice(0, 3).map((b) => (
+            <span key={b} className="rounded-full border border-tinta bg-white/70 px-2 py-0.5 text-xs font-bold">
+              {b}
+            </span>
+          ))}
+        </div>
+      </div>
+      <button className="btn btn-ghost mt-4" onClick={copy}>
+        {copied ? '✅ Copiado!' : '📋 Copiar minha carta'}
+      </button>
+    </div>
+  )
+}
+
 export default function Profile() {
-  const { go, setProfile, profile } = useApp()
+  const { go, setProfile, profile, award, teen } = useApp()
   const [step, setStep] = useState(0)
   const [age, setAge] = useState<number | null>(profile?.age ?? null)
   const [exp, setExp] = useState<Experience | null>(profile?.experience ?? null)
@@ -72,6 +116,7 @@ export default function Profile() {
       adaptNeed: adapt,
       adaptations: adapt === 'sim' ? adaptList : [],
     })
+    award('perfil', 50, 'Perfil criado')
     setDone(true)
   }
 
@@ -85,6 +130,7 @@ export default function Profile() {
         <p className="mt-2 text-tinta-suave text-lg font-semibold">
           Faixa etária: <b>{AGE_LABEL[ageGroupOf(age!)]}</b> · Nenhum dado foi enviado ou guardado.
         </p>
+        {profile && <PlayerCard profile={profile} teen={teen} />}
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button className="btn text-lg" onClick={() => go('recomendacoes')}>
             Ver minhas recomendações <ArrowRight size={18} />

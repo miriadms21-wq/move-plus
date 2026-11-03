@@ -66,6 +66,11 @@ function Sheet({ a }: { a: Activity }) {
 
 export default function Library() {
   const [open, setOpen] = useState<Activity | null>(null)
+  const { award } = useApp()
+  const openSheet = (a: Activity) => {
+    setOpen(a)
+    award(`ficha-${a.id}`, 10, `Ficha de ${a.name}`)
+  }
   return (
     <div className="page-in">
       <PageHeader title="Biblioteca de atividades" subtitle="Toque em um cartão para abrir a ficha educativa." />
@@ -73,7 +78,7 @@ export default function Library() {
         {ACTIVITIES.map((a) => (
           <button
             key={a.id}
-            onClick={() => setOpen(a)}
+            onClick={() => openSheet(a)}
             className="card text-left p-5 transition-transform hover:-translate-y-1 hover:rotate-[-0.5deg] focus-visible:-translate-y-1"
             style={{ borderTop: `10px solid ${a.color}` }}
             aria-label={`Abrir ficha de ${a.name}`}

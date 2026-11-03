@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Apple, Bed, Dumbbell, Zap } from 'lucide-react'
 import { EXPLAINERS } from '../data/content'
 import { MoviSays, NavButtons, Notice, PageHeader } from '../components/ui'
 import { useApp } from '../state'
 
 export default function Energy() {
-  const { go } = useApp()
+  const { go, award } = useApp()
   const [food, setFood] = useState('')
   const [kcal, setKcal] = useState<number | null>(null)
+  useEffect(() => {
+    if (kcal !== null) award('energia', 20, 'Energia de um alimento')
+  }, [kcal, award])
 
   const cards = [
     { icon: <Zap />, t: 'O que é quilocaloria?', d: EXPLAINERS.kcal, c: '#FFD87E' },

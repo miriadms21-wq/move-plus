@@ -4,13 +4,16 @@ import { MoviSays } from '../components/ui'
 import { useApp } from '../state'
 
 export default function Home() {
-  const { go } = useApp()
+  const { go, teen } = useApp()
   return (
     <div>
-      <section className="rounded-[2rem] border-2 border-tinta p-6 sm:p-10 text-center bg-gradient-to-br from-menta via-creme to-lilas shadow-[0_6px_0_#2b2d42]">
-        <p className="inline-block bg-white border-2 border-tinta rounded-full px-4 py-1 text-sm font-extrabold">Projeto interdisciplinar</p>
+      <section className="rounded-[2rem] border-2 border-tinta p-6 sm:p-10 text-center text-tinta bg-gradient-to-br from-menta via-creme to-lilas shadow-[0_6px_0_#2b2d42]">
+        <p className="inline-block bg-white border-2 border-tinta rounded-full px-4 py-1 text-sm font-extrabold">
+          {teen ? '🎮 Desafio: descubra seu personagem Move+' : 'Projeto interdisciplinar'}
+        </p>
         <h1 className="mt-4 text-6xl sm:text-8xl font-extrabold leading-none">
-          Move<span className="text-rosa [-webkit-text-stroke:3px_#2b2d42]">+</span>
+          <span className="neon-title">Move</span>
+          <span className="text-rosa [-webkit-text-stroke:3px_#2b2d42]">+</span>
         </h1>
         <p className="mt-2 text-xl sm:text-3xl font-bold font-display">Movimente-se, descubra e aprenda!</p>
 
@@ -27,13 +30,22 @@ export default function Home() {
         </div>
 
         <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg font-semibold">
-          O Move+ junta <b>Educação Física</b>, <b>Ciências</b> e <b>Matemática</b> para você conhecer 7 atividades, entender como o corpo
-          usa energia e receber sugestões que combinam com o seu perfil.
+          {teen ? (
+            <>
+              Bora ver o que seu corpo faz com energia? Crie seu <b>personagem</b>, ganhe <b>XP</b>, suba de nível, desbloqueie <b>conquistas</b> e descubra qual das 7
+              atividades combina com você. Educação Física + Ciências + Matemática, só que jogando. 🚀
+            </>
+          ) : (
+            <>
+              O Move+ junta <b>Educação Física</b>, <b>Ciências</b> e <b>Matemática</b> para você conhecer 7 atividades, entender como o corpo usa energia e receber
+              sugestões que combinam com o seu perfil.
+            </>
+          )}
         </p>
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button className="btn text-lg" onClick={() => go('perfil')}>
-            <Sparkles size={20} /> Começar minha descoberta!
+            <Sparkles size={20} /> {teen ? 'Bora começar! 🔥' : 'Começar minha descoberta!'}
           </button>
           <button className="btn btn-ghost" onClick={() => go('biblioteca')}>
             <Library size={18} /> Biblioteca de atividades

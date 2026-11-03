@@ -102,7 +102,7 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
 }
 
 export function Notice({ children }: { children: ReactNode }) {
-  return <p className="text-sm bg-amarelo/40 border-2 border-amarelo rounded-2xl px-4 py-3 font-semibold">{children}</p>
+  return <p className="text-sm bg-amarelo/90 text-tinta border-2 border-amarelo rounded-2xl px-4 py-3 font-semibold">{children}</p>
 }
 
 export function NavButtons({ back, next, nextLabel = 'Avançar' }: { back?: PageId; next?: PageId; nextLabel?: string }) {

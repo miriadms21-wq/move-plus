@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { CheckCircle2, RotateCcw, XCircle } from 'lucide-react'
 import { QUIZ } from '../data/content'
 import { MoviSays, NavButtons, PageHeader } from '../components/ui'
+import { useApp } from '../state'
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -27,6 +28,8 @@ export default function Quiz() {
   const [picked, setPicked] = useState<number | null>(null)
   const [score, setScore] = useState(0)
   const [finished, setFinished] = useState(false)
+  const [streak, setStreak] = useState(0)
+  const { award, celebrate } = useApp()
 
   const q = quiz[i]
   const answered = picked !== null
@@ -34,11 +37,20 @@ export default function Quiz() {
   const pick = (n: number) => {
     if (answered) return
     setPicked(n)
-    if (q.opts[n].ok) setScore((s) => s + 1)
+    if (q.opts[n].ok) {
+      setScore((s) => s + 1)
+      award(`q-${i}`, 10, 'Resposta certa')
+      const s = streak + 1
+      setStreak(s)
+      if (s >= 3) celebrate()
+    } else setStreak(0)
   }
   const next = () => {
-    if (i + 1 >= quiz.length) setFinished(true)
-    else {
+    if (i + 1 >= quiz.length) {
+      award('quiz-fim', 20, 'Quiz concluído')
+      if (score >= 9) award('quiz-mestre', 30, 'Mestre do Quiz')
+      setFinished(true)
+    } else {
       setI(i + 1)
       setPicked(null)
     }
@@ -48,6 +60,7 @@ export default function Quiz() {
     setI(0)
     setPicked(null)
     setScore(0)
+    setStreak(0)
     setFinished(false)
   }
 
@@ -81,7 +94,10 @@ export default function Quiz() {
       <div className="h-4 rounded-full border-2 border-tinta bg-white overflow-hidden mb-1" aria-hidden="true">
         <div className="h-full bg-menta transition-all duration-500" style={{ width: `${((i + (answered ? 1 : 0)) / quiz.length) * 100}%` }} />
       </div>
-      <p className="mb-4 text-sm font-bold text-tinta-suave">Pergunta {i + 1} de {quiz.length}</p>
+      <p className="mb-4 text-sm font-bold text-tinta-suave">
+        Pergunta {i + 1} de {quiz.length}
+        {streak >= 2 && <span className="ml-3 rounded-full bg-amarelo px-3 py-0.5 text-tinta pop">🔥 Combo x{streak}!</span>}
+      </p>
 
       <div className="card p-5" key={`${round}-${i}`}>
         <h2 className="text-xl sm:text-2xl font-extrabold">{q.q}</h2>
