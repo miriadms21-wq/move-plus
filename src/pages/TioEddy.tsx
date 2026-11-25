@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { BRAND, COLORS, FLAVORS, INGREDIENTS, INGREDIENT_LIST, NUTRI_100G, PRICE, WHY, type Flavor } from '../data/tioeddy'
-import { PERIODS, brl, spent } from '../lib/snack'
+import { brl } from '../lib/snack'
 import { useApp } from '../state'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`
@@ -90,37 +89,10 @@ function FlavorCard({ f }: { f: Flavor }) {
   )
 }
 
-function Invest() {
-  const [days, setDays] = useState(7)
-  const perDay = days / 7
+function Closing() {
   return (
-    <section className="py-16" style={{ background: COLORS.mare, color: noite }}>
-      <div className="mx-auto max-w-6xl px-5">
-        <Eyebrow color={noite}>Mesmo hábito, outra escolha</Eyebrow>
-        <h2 className="te-title mt-2 text-3xl sm:text-5xl">Quanto custa um lanche saudável?</h2>
-        <p className="mt-3 max-w-2xl text-lg font-bold">
-          Snack todo mundo compra. A diferença está no que vai no pacote: pão sírio assado, azeite extravirgem e ingredientes naturais. Vale cada centavo investido no seu lanche.
-        </p>
-        <label className="mt-6 inline-block text-sm font-bold">
-          Quantos dias por semana você lancha?
-          <select value={days} onChange={(e) => setDays(Number(e.target.value))} className="mt-1 block rounded-xl border-2 border-black bg-white px-3 py-2 text-lg font-bold">
-            {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-              <option key={d} value={d}>
-                {d} {d === 1 ? 'dia' : 'dias'}
-              </option>
-            ))}
-          </select>
-        </label>
-        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {PERIODS.map((p) => (
-            <div key={p.id} className="min-w-0 rounded-3xl p-4" style={{ background: noite, color: '#fff' }}>
-              <p className="te-body text-[11px] font-bold uppercase tracking-wider" style={{ color: dourado }}>{p.label}</p>
-              <p className="te-title mt-1 text-2xl">{brl(spent(PRICE, perDay, p.days))}</p>
-            </div>
-          ))}
-        </div>
-        <p className="te-title mt-8 text-2xl sm:text-4xl">Gaste com o que faz bem. Escolha Tio Eddy.</p>
-      </div>
+    <section className="py-20 text-center" style={{ background: COLORS.mare, color: noite }}>
+      <p className="te-title mx-auto max-w-4xl px-5 text-3xl sm:text-5xl">Gaste com o que faz bem. Escolha Tio Eddy.</p>
     </section>
   )
 }
@@ -254,7 +226,7 @@ export default function TioEddy() {
         </div>
       </section>
 
-      <Invest />
+      <Closing />
 
       <footer className="border-t border-white/10 px-5 py-12 text-center">
         <img src={asset('tioeddy/logo/L-RGB-2.svg')} alt="Tio Eddy" className="mx-auto mb-6 h-20 w-auto" />
