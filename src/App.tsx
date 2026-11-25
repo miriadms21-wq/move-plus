@@ -1,4 +1,4 @@
-import { BookOpen, Calculator as CalcIcon, FlaskConical, Home as HomeIcon, Library, PiggyBank, Presentation as PresIcon, Salad, Sparkles, Trophy, UserRound } from 'lucide-react'
+import { BookOpen, Calculator as CalcIcon, FlaskConical, Home as HomeIcon, Library, PiggyBank, Presentation as PresIcon, Salad, Sparkles, Store, Trophy, UserRound } from 'lucide-react'
 import { AppProvider, useApp, type PageId } from './state'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
@@ -6,6 +6,7 @@ import Library_ from './pages/Library'
 import Calculator from './pages/Calculator'
 import Recommendations from './pages/Recommendations'
 import Energy from './pages/Energy'
+import TioEddy from './pages/TioEddy'
 import Savings from './pages/Savings'
 import Lab from './pages/Lab'
 import Quiz from './pages/Quiz'
@@ -22,6 +23,7 @@ const NAV: { id: PageId; label: string; icon: React.ReactNode }[] = [
   { id: 'recomendacoes', label: 'Recomendações', icon: <Sparkles size={18} /> },
   { id: 'energia', label: 'Energia', icon: <Salad size={18} /> },
   { id: 'economia', label: 'Economia', icon: <PiggyBank size={18} /> },
+  { id: 'tioeddy', label: 'TIO EDDY', icon: <Store size={18} /> },
   { id: 'laboratorio', label: 'Laboratório', icon: <FlaskConical size={18} /> },
   { id: 'quiz', label: 'Quiz', icon: <Trophy size={18} /> },
   { id: 'fontes', label: 'Fontes', icon: <BookOpen size={18} /> },
@@ -36,6 +38,7 @@ const PAGES: Record<PageId, () => React.ReactElement> = {
   recomendacoes: Recommendations,
   energia: Energy,
   economia: Savings,
+  tioeddy: TioEddy,
   laboratorio: Lab,
   quiz: Quiz,
   fontes: Sources,
@@ -45,6 +48,7 @@ const PAGES: Record<PageId, () => React.ReactElement> = {
 function Shell() {
   const { page, mode } = useApp()
   const Page = PAGES[page]
+  if (page === 'tioeddy') return <TioEddy />
   const Layout = mode === 'premium' ? PremiumShell : TopShell
   return (
     <>

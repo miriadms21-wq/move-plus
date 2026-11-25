@@ -27,6 +27,7 @@ export type PageId =
   | 'recomendacoes'
   | 'energia'
   | 'economia'
+  | 'tioeddy'
   | 'laboratorio'
   | 'quiz'
   | 'fontes'
@@ -40,6 +41,7 @@ const PAGES: PageId[] = [
   'recomendacoes',
   'energia',
   'economia',
+  'tioeddy',
   'laboratorio',
   'quiz',
   'fontes',
