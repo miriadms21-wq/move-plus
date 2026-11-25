@@ -1,176 +1,233 @@
-import { ArrowLeft, Camera, Leaf, Sparkles } from 'lucide-react'
-import { BRAND, COMPARISON, FLAVORS, INGREDIENTS, PRICE, type Flavor } from '../data/tioeddy'
+import { ArrowLeft, Sparkles } from 'lucide-react'
+import { BRAND, COLORS, COMPARISON, FLAVORS, INGREDIENTS, PACK_SEAL, PRICE, type Flavor } from '../data/tioeddy'
 import { brl } from '../lib/snack'
 import { useApp } from '../state'
 
-const Y = '#FFC400'
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`
+const { noite, dourado } = COLORS
 
-function Photo({ src, label, className = '' }: { src?: string; label: string; className?: string }) {
-  if (src) return <img src={asset(src)} alt={label} loading="lazy" className={`object-cover ${className}`} />
+function Eyebrow({ children, color = dourado }: { children: string; color?: string }) {
   return (
-    <div
-      role="img"
-      aria-label={`Espaço reservado: ${label}`}
-      className={`flex flex-col items-center justify-center gap-2 text-center text-xs font-semibold ${className}`}
-      style={{ background: 'repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 14px,#222 14px,#222 28px)', color: '#8a8a8a' }}
-    >
-      <Camera size={28} />
-      Foto: {label}
-    </div>
-  )
-}
-
-function Eyebrow({ children }: { children: string }) {
-  return (
-    <p className="text-xs font-extrabold uppercase tracking-[0.25em]" style={{ color: Y }}>
+    <p className="te-body text-xs font-bold uppercase tracking-[0.28em]" style={{ color }}>
       {children}
     </p>
   )
 }
 
+function BackButton() {
+  const { go } = useApp()
+  return (
+    <button
+      onClick={() => {
+        go('economia')
+        window.scrollTo(0, 0)
+      }}
+      className="te-body inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-4 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-black"
+    >
+      <ArrowLeft size={16} /> Voltar ao Move+
+    </button>
+  )
+}
+
+function Ticker() {
+  const items = ['Pão sírio', 'Azeite extra virgem', 'Assado', 'Leve, delicioso & muito crocante', 'Ingredientes naturais']
+  const row = [...items, ...items]
+  return (
+    <div className="overflow-hidden py-3" style={{ background: dourado, color: noite }} aria-hidden="true">
+      <div className="te-marquee flex w-max gap-8 whitespace-nowrap">
+        {[...row, ...row].map((t, i) => (
+          <span key={i} className="te-title text-lg sm:text-xl">
+            {t} <span className="mx-3">✦</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function NutriBadges({ f }: { f: Flavor }) {
+  const items = [
+    [f.nutrition.kcal, 'calorias'],
+    [f.nutrition.trans, 'gordura trans'],
+    [f.nutrition.fibras, 'fibras'],
+    [f.nutrition.proteinas, 'proteínas'],
+  ]
+  return (
+    <div className="grid grid-cols-4 gap-2">
+      {items.map(([v, l]) => (
+        <div key={l} className="rounded-2xl bg-white px-1 py-2 text-center" style={{ color: noite }}>
+          <p className="te-title text-base sm:text-lg">{v}</p>
+          <p className="te-body text-[10px] font-bold uppercase leading-tight">{l}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function FlavorCard({ f }: { f: Flavor }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#161616]">
-      <Photo src={f.image} label={f.name} className="h-48 w-full" />
-      <div className="p-5">
-        <h3 className="text-xl font-extrabold text-white">{f.name}</h3>
-        <p className="mt-1 text-sm text-neutral-400">{f.description}</p>
-        <p className="mt-3 text-lg font-extrabold" style={{ color: Y }}>
-          {brl(f.price ?? PRICE)}
-        </p>
+    <article className="overflow-hidden rounded-[2rem] border-4 border-black/0 shadow-xl" style={{ background: f.color, color: f.ink }}>
+      <div className="relative">
+        <img src={asset(f.photos[0])} alt={`Tio Eddy ${f.name}`} loading="lazy" className="h-56 w-full object-cover" />
+        <img
+          src={asset(f.pack)}
+          alt={`Embalagem Tio Eddy ${f.name} 80g`}
+          loading="lazy"
+          className="absolute -bottom-10 right-4 w-28 rotate-3 rounded-2xl bg-white shadow-2xl"
+        />
+      </div>
+      <div className="p-5 pt-6">
+        <h3 className="te-title text-3xl">{f.name}</h3>
+        <p className="te-body mt-2 max-w-[60%] text-sm font-bold">{f.description}</p>
+        <p className="te-body mt-4 text-xs font-bold uppercase tracking-widest opacity-70">Por pacote de 80 g · conforme embalagem</p>
+        <div className="mt-2">
+          <NutriBadges f={f} />
+        </div>
+        <p className="te-title mt-5 text-4xl">{brl(f.price ?? PRICE)}</p>
       </div>
     </article>
   )
 }
 
 export default function TioEddy() {
-  const { go } = useApp()
-  const back = (
-    <button
-      onClick={() => {
-        go('economia')
-        window.scrollTo(0, 0)
-      }}
-      className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-bold text-white hover:bg-white/10"
-    >
-      <ArrowLeft size={16} /> Voltar ao Move+
-    </button>
-  )
-
   return (
-    <div className="min-h-screen bg-[#0b0b0b] text-white" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-[#0b0b0b]/90 px-5 py-3 backdrop-blur">
-        <span className="text-xl font-extrabold tracking-tight">
-          <span style={{ color: Y }}>●</span> TIO EDDY
-        </span>
-        {back}
+    <div className="te-body min-h-screen overflow-x-hidden text-white" style={{ background: noite }}>
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 px-5 py-3 backdrop-blur" style={{ background: noite + 'ee' }}>
+        <img src={asset('tioeddy/logo/L-RGB-4.svg')} alt="Tio Eddy" className="h-10 w-auto" />
+        <BackButton />
       </header>
 
       {/* 1. Apresentação */}
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-14 md:grid-cols-2 md:py-24">
-        <div>
-          <Eyebrow>Snack · pão sírio · azeite extravirgem</Eyebrow>
-          <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] sm:text-5xl" style={{ fontFamily: "'Fraunces', serif" }}>
-            {BRAND.heroTitle}
-          </h1>
-          <p className="mt-5 max-w-lg text-lg text-neutral-300">{BRAND.heroText}</p>
-          <p className="mt-6 border-l-4 pl-4 text-base font-semibold" style={{ borderColor: Y, color: Y }}>
-            {BRAND.tagline}
-          </p>
-        </div>
-        <Photo src={BRAND.heroImage} label="foto de destaque do produto" className="aspect-square w-full rounded-3xl" />
-      </section>
-
-      {/* 2. Ingredientes */}
-      <section className="border-y border-white/10 bg-[#111] py-14">
-        <div className="mx-auto max-w-6xl px-5">
-          <Eyebrow>Ingredientes</Eyebrow>
-          <h2 className="mt-2 text-3xl font-extrabold">Conheça nossos ingredientes</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {INGREDIENTS.map((i) => (
-              <div key={i.name} className="rounded-2xl border border-white/10 bg-[#161616] p-6">
-                <Leaf style={{ color: Y }} />
-                <h3 className="mt-3 text-xl font-extrabold">{i.name}</h3>
-                {i.description && <p className="mt-1 text-sm text-neutral-400">{i.description}</p>}
-              </div>
-            ))}
-            <div className="rounded-2xl border border-dashed border-white/20 p-6 text-sm text-neutral-500">
-              Outros ingredientes serão adicionados aqui quando forem confirmados.
+      <section className="relative overflow-hidden">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 md:grid-cols-2 md:py-20">
+          <div>
+            <Eyebrow>Snack assado · pão sírio · azeite extra virgem</Eyebrow>
+            <h1 className="te-title mt-4 text-4xl sm:text-6xl">
+              Tio Eddy:
+              <br />
+              <span style={{ color: dourado }}>{BRAND.heroTitle}</span>
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-neutral-200">{BRAND.heroText}</p>
+            <p className="te-title mt-8 inline-block rotate-[-1.5deg] rounded-xl px-4 py-3 text-xl sm:text-2xl" style={{ background: dourado, color: noite }}>
+              {BRAND.tagline}
+            </p>
+          </div>
+          <div className="relative">
+            <img src={asset(BRAND.heroPhoto)} alt="Mão pegando um chip de pão sírio Tio Eddy com guacamole" className="aspect-[4/5] w-full rounded-[2.5rem] border-4 object-cover" style={{ borderColor: dourado }} />
+            <div className="absolute -bottom-6 -left-3 flex gap-2 sm:-left-8">
+              {FLAVORS.map((f, i) => (
+                <img
+                  key={f.id}
+                  src={asset(f.pack)}
+                  alt={`Embalagem ${f.name}`}
+                  className="w-24 rounded-2xl sm:w-32"
+                  style={{ transform: `rotate(${(i - 1) * 6}deg)`, background: '#fff', boxShadow: '0 12px 30px #0008' }}
+                />
+              ))}
             </div>
           </div>
         </div>
       </section>
+      <Ticker />
 
-      {/* 3. Sabores */}
-      <section className="mx-auto max-w-6xl px-5 py-14">
-        <Eyebrow>Sabores</Eyebrow>
-        <h2 className="mt-2 text-3xl font-extrabold">Conheça os sabores</h2>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FLAVORS.length > 0 ? (
-            FLAVORS.map((f) => <FlavorCard key={f.id} f={f} />)
-          ) : (
-            <article className="overflow-hidden rounded-2xl border border-dashed border-white/20 bg-[#161616]">
-              <Photo label="foto do sabor" className="h-48 w-full" />
-              <div className="p-5">
-                <h3 className="text-xl font-extrabold">Sabores em breve</h3>
-                <p className="mt-1 text-sm text-neutral-400">
-                  Os sabores disponíveis serão apresentados aqui, cada um com foto, descrição e preço.
-                </p>
+      {/* 2. Ingredientes */}
+      <section className="mx-auto max-w-6xl px-5 py-16">
+        <Eyebrow>Ingredientes</Eyebrow>
+        <h2 className="te-title mt-2 text-3xl sm:text-5xl">Conheça nossos ingredientes</h2>
+        <p className="mt-3 max-w-2xl text-lg text-neutral-300">{BRAND.packLine}.</p>
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+          {INGREDIENTS.map((i, n) => (
+            <article key={i.name} className="relative overflow-hidden rounded-[2rem] border-2 border-white/15">
+              <img src={asset(i.photo)} alt={i.name} loading="lazy" className="h-64 w-full object-cover" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #1a1a1aee 15%, transparent 70%)' }} />
+              <div className="absolute bottom-0 p-6">
+                <span className="te-title text-6xl" style={{ color: dourado }}>0{n + 1}</span>
+                <h3 className="te-title text-3xl">{i.name}</h3>
+                <p className="mt-1 text-sm font-bold text-neutral-200">{i.description}</p>
               </div>
             </article>
-          )}
+          ))}
+        </div>
+        <p className="mt-4 rounded-2xl border border-dashed border-white/25 p-4 text-sm text-neutral-300">
+          A lista completa de ingredientes de cada sabor está no rótulo da embalagem.
+        </p>
+      </section>
+
+      {/* História (aparece quando houver texto oficial) */}
+      {BRAND.story && (
+        <section className="py-16" style={{ background: COLORS.mare, color: noite }}>
+          <div className="mx-auto max-w-3xl px-5">
+            <Eyebrow color={noite}>Nossa história</Eyebrow>
+            <p className="te-title mt-3 text-3xl">{BRAND.story}</p>
+          </div>
+        </section>
+      )}
+
+      {/* 3. Sabores */}
+      <section className="py-16" style={{ background: '#111' }}>
+        <div className="mx-auto max-w-6xl px-5">
+          <Eyebrow>Sabores</Eyebrow>
+          <h2 className="te-title mt-2 text-3xl sm:text-5xl">Conheça os sabores</h2>
+          <p className="te-title mt-3 text-xl" style={{ color: dourado }}>{BRAND.packPhrase}</p>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {FLAVORS.map((f) => (
+              <FlavorCard key={f.id} f={f} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* 4. Preço */}
-      <section className="py-14" style={{ background: Y, color: '#0b0b0b' }}>
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-5 text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.25em]">Preço</p>
-          <p className="text-6xl font-extrabold sm:text-7xl" style={{ fontFamily: "'Fraunces', serif" }}>
-            {brl(PRICE)}
-          </p>
-          <p className="text-sm font-semibold opacity-70">Preço informado pela marca.</p>
+      <section className="py-16 text-center" style={{ background: dourado, color: noite }}>
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="te-body text-xs font-bold uppercase tracking-[0.3em]">Preço</p>
+          <p className="te-title text-[clamp(2.75rem,15vw,8rem)]">{brl(PRICE)}</p>
+          <p className="te-body mt-2 text-sm font-bold opacity-70">Preço informado pela marca.</p>
         </div>
       </section>
 
       {/* 5. Comparação */}
-      <section className="mx-auto max-w-6xl px-5 py-14">
+      <section className="mx-auto max-w-6xl px-5 py-16">
         <Eyebrow>Outra possibilidade</Eyebrow>
-        <h2 className="mt-2 text-3xl font-extrabold">Propostas lado a lado</h2>
-        <p className="mt-2 max-w-2xl text-neutral-400">
+        <h2 className="te-title mt-2 text-3xl sm:text-5xl">Propostas lado a lado</h2>
+        <p className="mt-3 max-w-2xl text-lg text-neutral-300">
           Cada snack tem a sua proposta. Olhar a composição e a lista de ingredientes ajuda a escolher com mais informação.
         </p>
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-white/10">
-          <table className="w-full min-w-[520px] text-left">
-            <thead className="bg-[#161616] text-sm">
+        <div className="mt-8 overflow-x-auto rounded-3xl border-2 border-white/15">
+          <table className="w-full min-w-[560px] text-left">
+            <thead className="bg-white/5 text-sm">
               <tr>
                 <th className="p-4 text-neutral-400">Critério</th>
-                <th className="p-4" style={{ color: Y }}>
-                  Tio Eddy
-                </th>
+                <th className="te-title p-4 text-lg" style={{ color: dourado }}>Tio Eddy</th>
                 <th className="p-4 text-neutral-300">Outros snacks</th>
               </tr>
             </thead>
             <tbody>
               {COMPARISON.map((r) => (
                 <tr key={r.label} className="border-t border-white/10">
-                  <th scope="row" className="p-4 font-bold">
-                    {r.label}
-                  </th>
-                  <td className="p-4 font-semibold">{r.eddy}</td>
+                  <th scope="row" className="p-4 font-bold">{r.label}</th>
+                  <td className="p-4 font-bold">{r.eddy}</td>
                   <td className="p-4 text-neutral-400">{r.other}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-3 flex items-center gap-2 text-xs text-neutral-500">
+        <div className="mt-5 flex flex-wrap items-center gap-4 rounded-3xl p-5" style={{ background: COLORS.brasa }}>
+          <p className="te-title text-4xl sm:text-5xl">50%</p>
+          <p className="te-body max-w-md text-sm font-bold sm:text-base">
+            Selo impresso na embalagem: “{PACK_SEAL}”. Alegação da marca, conforme a embalagem.
+          </p>
+        </div>
+        <p className="mt-3 flex items-center gap-2 text-xs text-neutral-400">
           <Sparkles size={14} /> Comparação informativa, sem juízo de valor. Confira sempre o rótulo de cada produto.
         </p>
       </section>
 
-      <footer className="border-t border-white/10 px-5 py-10 text-center">{back}</footer>
+      <footer className="border-t border-white/10 px-5 py-12 text-center">
+        <img src={asset('tioeddy/logo/L-RGB-2.svg')} alt="Tio Eddy" className="mx-auto mb-6 h-20 w-auto" />
+        <BackButton />
+      </footer>
     </div>
   )
 }

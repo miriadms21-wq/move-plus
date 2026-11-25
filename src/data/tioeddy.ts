@@ -1,47 +1,97 @@
 /**
  * Dados editáveis da aba Tio Eddy.
- * Para atualizar: edite este arquivo (sabores, ingredientes, fotos, preço).
- * Fotos: coloque o arquivo em /public/tioeddy/ e preencha `image` (ex.: 'tioeddy/original.jpg').
+ * Fonte: Drive "03_Marketing e Comunicação" (Brandbook V1 jul/2025, embalagens e ensaio de fotos).
+ * Para atualizar: edite este arquivo. Fotos ficam em /public/tioeddy/.
  */
 export interface Flavor {
   id: string
   name: string
   description: string
+  /** Cor do sabor (a mesma da embalagem). */
+  color: string
+  /** Texto escuro ou claro sobre a cor. */
+  ink: string
+  logo: string
+  pack: string
+  photos: string[]
+  /** Informações impressas na embalagem (por pacote de 80g). */
+  nutrition: { kcal: string; trans: string; fibras: string; proteinas: string }
   /** Se vazio, usa o preço geral do produto. */
   price?: number
-  image?: string
 }
 
-export interface Ingredient {
-  name: string
-  description?: string
+/** Paleta oficial (Brandbook V1). */
+export const COLORS = {
+  noite: '#1A1A1A',
+  dourado: '#EFAC1F',
+  mare: '#61B8FF',
+  brasa: '#F56126',
+  alecrim: '#7DBF61',
 }
 
 export const BRAND = {
   name: 'Tio Eddy',
   tagline: 'Se é para escolher um snack, conheça uma opção com outra proposta.',
-  heroTitle: 'Tio Eddy: uma nova proposta para seus momentos de snack.',
+  heroTitle: 'Uma nova proposta para seus momentos de snack.',
   heroText:
     'Feito à base de pão sírio e azeite extravirgem, o Tio Eddy apresenta uma proposta diferente para quem gosta de snacks e quer conhecer novas opções.',
-  /** Foto de destaque (opcional). */
-  heroImage: '' as string,
+  /** Texto da embalagem. */
+  packLine: 'Snack assado de pão sírio de fermentação natural e azeite extra virgem',
+  packPhrase: 'Leve, delicioso & muito crocante.',
+  heroPhoto: 'tioeddy/fotos/picante-dip.jpg',
+  /** História da marca: preencha quando o texto oficial estiver disponível. Vazio = a seção não aparece. */
+  story: '' as string,
 }
 
 export const PRICE = 14.99
 
-export const INGREDIENTS: Ingredient[] = [
-  { name: 'Pão sírio' },
-  { name: 'Azeite extravirgem' },
-  // Adicione aqui outros ingredientes quando forem confirmados:
-  // { name: 'Nome', description: 'Descrição' },
+export const INGREDIENTS = [
+  { name: 'Pão sírio', description: 'De fermentação natural, assado. É a base de todos os sabores.', photo: 'tioeddy/fotos/azeite-prato.jpg' },
+  { name: 'Azeite extra virgem', description: 'O azeite que acompanha o pão sírio em cada pacote.', photo: 'tioeddy/fotos/azeite-dip.jpg' },
 ]
 
-/** Sabores reais ainda não informados. Adicione objetos aqui e os cartões aparecem sozinhos. */
-export const FLAVORS: Flavor[] = []
+export const FLAVORS: Flavor[] = [
+  {
+    id: 'azeite-sal',
+    name: 'Azeite & Sal',
+    description: 'O sabor mais simples: pão sírio assado, azeite extra virgem e sal.',
+    color: COLORS.mare,
+    ink: COLORS.noite,
+    logo: 'tioeddy/logo/L-RGB-5.svg',
+    pack: 'tioeddy/packs/azeite.jpg',
+    photos: ['tioeddy/fotos/azeite-prato.jpg', 'tioeddy/fotos/azeite-perto.jpg'],
+    nutrition: { kcal: '272', trans: '0 g', fibras: '1,6 g', proteinas: '5,5 g' },
+  },
+  {
+    id: 'picante',
+    name: 'Picante',
+    description: 'Para quem gosta de um toque de picância no pão sírio crocante.',
+    color: COLORS.brasa,
+    ink: '#fff',
+    logo: 'tioeddy/logo/L-RGB-8.svg',
+    pack: 'tioeddy/packs/picante.jpg',
+    photos: ['tioeddy/fotos/picante-dip.jpg', 'tioeddy/fotos/picante-prato.jpg'],
+    nutrition: { kcal: '270', trans: '0 g', fibras: '1,76 g', proteinas: '5,4 g' },
+  },
+  {
+    id: 'parmesao-ervas',
+    name: 'Parmesão & Ervas',
+    description: 'Parmesão e ervas sobre o pão sírio assado.',
+    color: COLORS.alecrim,
+    ink: COLORS.noite,
+    logo: 'tioeddy/logo/L-RGB-10.svg',
+    pack: 'tioeddy/packs/parmesao.jpg',
+    photos: ['tioeddy/fotos/parmesao-perto.jpg', 'tioeddy/fotos/parmesao-dip.jpg'],
+    nutrition: { kcal: '278', trans: '0 g', fibras: '1,6 g', proteinas: '7,4 g' },
+  },
+]
+
+/** Selo impresso nas embalagens (alegação da marca). */
+export const PACK_SEAL = '50% menos gordura que um chips de batata tradicional'
 
 export const COMPARISON = [
-  { label: 'Base do produto', eddy: 'Pão sírio', other: 'Consulte o rótulo' },
-  { label: 'Gordura em destaque', eddy: 'Azeite extravirgem', other: 'Consulte o rótulo' },
-  { label: 'Lista completa de ingredientes', eddy: 'A confirmar', other: 'Consulte o rótulo' },
-  { label: 'Informação nutricional', eddy: 'A confirmar', other: 'Consulte o rótulo' },
+  { label: 'Base do produto', eddy: 'Pão sírio de fermentação natural', other: 'Consulte o rótulo' },
+  { label: 'Como é feito', eddy: 'Assado', other: 'Consulte o rótulo' },
+  { label: 'Gordura em destaque', eddy: 'Azeite extra virgem', other: 'Consulte o rótulo' },
+  { label: 'Gordura trans (por pacote)', eddy: '0 g, conforme embalagem', other: 'Consulte o rótulo' },
 ]
