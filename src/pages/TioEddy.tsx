@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ArrowLeft, Sparkles } from 'lucide-react'
-import { BRAND, COLORS, COMPARISON, COMPETITORS, COMPETITORS_VERIFIED, FLAVORS, INGREDIENTS, INGREDIENT_LIST, NUTRI_100G, PRICE, WHY, type Flavor } from '../data/tioeddy'
+import { ArrowLeft } from 'lucide-react'
+import { BRAND, COLORS, FLAVORS, INGREDIENTS, INGREDIENT_LIST, NUTRI_100G, PRICE, WHY, type Flavor } from '../data/tioeddy'
 import { PERIODS, brl, spent } from '../lib/snack'
 import { useApp } from '../state'
 
@@ -252,70 +252,6 @@ export default function TioEddy() {
           <p className="te-title text-[clamp(2.75rem,15vw,8rem)]">{brl(PRICE)}</p>
           <p className="te-body mt-2 text-sm font-bold opacity-70">Preço informado pela marca.</p>
         </div>
-      </section>
-
-      {/* 5. Comparação */}
-      <section className="mx-auto max-w-6xl px-5 py-16">
-        <Eyebrow>Outra possibilidade</Eyebrow>
-        <h2 className="te-title mt-2 text-3xl sm:text-5xl">Propostas lado a lado</h2>
-        <p className="mt-3 max-w-2xl text-lg text-neutral-300">
-          Cada snack tem a sua proposta. Olhar a composição e a lista de ingredientes ajuda a escolher com mais informação.
-        </p>
-        <div className="mt-8 overflow-x-auto rounded-3xl border-2 border-white/15">
-          <table className="w-full text-left text-sm sm:text-base">
-            <thead className="bg-white/5 text-sm">
-              <tr>
-                <th className="p-3 text-neutral-400 sm:p-4">Critério</th>
-                <th className="te-title p-4 text-lg" style={{ color: dourado }}>Tio Eddy</th>
-                <th className="p-4 text-neutral-300">Outros snacks</th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISON.map((r) => (
-                <tr key={r.label} className="border-t border-white/10">
-                  <th scope="row" className="p-3 font-bold sm:p-4">{r.label}</th>
-                  <td className="p-3 font-bold sm:p-4">{r.eddy}</td>
-                  <td className="p-3 text-neutral-400 sm:p-4">{r.other}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {COMPETITORS_VERIFIED && (
-          <div className="mt-6 overflow-x-auto rounded-3xl border-2 border-white/15">
-            <table className="w-full text-left text-sm sm:text-base">
-              <caption className="p-3 text-left text-xs text-neutral-400">Por 100 g, conforme o rótulo de cada produto.</caption>
-              <thead className="bg-white/5">
-                <tr>
-                  <th className="p-3">Produto</th>
-                  <th className="p-3">kcal</th>
-                  <th className="p-3">Gorduras totais</th>
-                  <th className="p-3">Saturadas</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-t border-white/10 font-bold" style={{ color: dourado }}>
-                  <td className="p-3">Tio Eddy Azeite &amp; Sal</td><td className="p-3">340</td><td className="p-3">12 g</td><td className="p-3">1,8 g</td>
-                </tr>
-                {COMPETITORS.map((c) => (
-                  <tr key={c.name} className="border-t border-white/10">
-                    <td className="p-3">{c.name} <span className="text-xs text-neutral-400">{c.product}</span></td>
-                    <td className="p-3">{c.kcal}</td><td className="p-3">{c.gordura} g</td><td className="p-3">{c.saturada} g</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <div className="mt-5 flex flex-wrap items-center gap-4 rounded-3xl p-5" style={{ background: COLORS.brasa }}>
-          <p className="te-title text-4xl sm:text-5xl">50%</p>
-          <p className="te-title max-w-xl text-xl sm:text-2xl">
-            menos gordura que um chips de batata tradicional.
-          </p>
-        </div>
-        <p className="mt-3 flex items-center gap-2 text-xs text-neutral-400">
-          <Sparkles size={14} /> Confira sempre o rótulo de cada produto e escolha o que faz sentido para você.
-        </p>
       </section>
 
       <Invest />

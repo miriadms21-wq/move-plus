@@ -96,15 +96,12 @@ export const FLAVORS: Flavor[] = [
   },
 ]
 
-/** Selo impresso nas embalagens (alegação da marca). */
 export const WHY = [
   { big: '50%', small: 'menos gordura que um chips de batata tradicional' },
   { big: '0 g', small: 'de gordura trans por pacote' },
   { big: 'Assado', small: 'pão sírio de fermentação natural' },
   { big: 'Natural', small: 'ingredientes naturais, leve e muito crocante' },
 ]
-
-export const PACK_SEAL = '50% menos gordura que um chips de batata tradicional'
 
 /** Tabela nutricional do Azeite & Sal, por 100 g (verso da embalagem). */
 export const NUTRI_100G = [
@@ -117,22 +114,3 @@ export const NUTRI_100G = [
 ]
 export const INGREDIENT_LIST =
   'Pão sírio (farinha de trigo enriquecida com ferro e ácido fólico, açúcar, sal e conservante propionato de cálcio), azeite de oliva extra virgem, sal. Contém derivados de trigo. Contém glúten.'
-
-/**
- * Comparativo com outras marcas, por 100 g.
- * SÓ APARECE quando COMPETITORS_VERIFIED = true, depois de conferir cada valor no rótulo do produto.
- * Preencha 'value' com o número do rótulo e 'product' com o produto exato (sabor e gramagem).
- */
-export const COMPETITORS_VERIFIED = false
-export const COMPETITORS = [
-  { name: 'Gulão', product: '', kcal: '', gordura: '', saturada: '' },
-  { name: 'Cheetos', product: '', kcal: '', gordura: '', saturada: '' },
-  { name: 'Doritos', product: '', kcal: '', gordura: '', saturada: '' },
-]
-
-export const COMPARISON = [
-  { label: 'Base do produto', eddy: 'Pão sírio de fermentação natural', other: 'Consulte o rótulo' },
-  { label: 'Como é feito', eddy: 'Assado', other: 'Consulte o rótulo' },
-  { label: 'Gordura em destaque', eddy: 'Azeite extravirgem', other: 'Consulte o rótulo' },
-  { label: 'Gordura trans (por pacote)', eddy: '0 g por pacote', other: 'Consulte o rótulo' },
-]
