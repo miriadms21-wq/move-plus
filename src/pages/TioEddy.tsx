@@ -170,7 +170,7 @@ export default function TioEddy() {
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {WHY.map((w, i) => (
             <div key={w.big} className="rounded-3xl p-4 sm:p-5" style={{ background: [COLORS.mare, COLORS.brasa, COLORS.alecrim, dourado][i], color: i === 1 ? '#fff' : noite }}>
-              <p className="te-title break-words text-xl sm:text-4xl">{w.big}</p>
+              <p className="te-title whitespace-nowrap text-xl sm:text-2xl md:text-xl lg:text-3xl xl:text-4xl">{w.big}</p>
               <p className="te-body mt-1 text-sm font-bold leading-snug">{w.small}</p>
             </div>
           ))}
