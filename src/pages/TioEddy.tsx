@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowLeft, Sparkles } from 'lucide-react'
-import { BRAND, COLORS, COMPARISON, FLAVORS, INGREDIENTS, PRICE, WHY, type Flavor } from '../data/tioeddy'
+import { BRAND, COLORS, COMPARISON, COMPETITORS, COMPETITORS_VERIFIED, FLAVORS, INGREDIENTS, INGREDIENT_LIST, NUTRI_100G, PRICE, WHY, type Flavor } from '../data/tioeddy'
 import { PERIODS, brl, spent } from '../lib/snack'
 import { useApp } from '../state'
 
@@ -195,20 +195,41 @@ export default function TioEddy() {
             </article>
           ))}
         </div>
-        <p className="mt-4 rounded-2xl border border-dashed border-white/25 p-4 text-sm text-neutral-300">
-          A lista completa de ingredientes de cada sabor está no rótulo da embalagem.
+        <p className="mt-4 rounded-2xl border border-white/15 p-4 text-sm text-neutral-300">
+          <strong className="text-white">Ingredientes (Azeite &amp; Sal):</strong> {INGREDIENT_LIST} A lista de cada sabor está no rótulo da embalagem.
         </p>
+        <h3 className="te-title mt-10 text-2xl sm:text-3xl">Por 100 g <span style={{ color: dourado }}>(Azeite &amp; Sal)</span></h3>
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {NUTRI_100G.map((n) => (
+            <div key={n.small} className="rounded-3xl border-2 border-white/15 p-4 text-center">
+              <p className="te-title text-2xl sm:text-3xl" style={{ color: dourado }}>{n.big}</p>
+              <p className="te-body mt-1 text-xs font-bold uppercase tracking-wide text-neutral-300">{n.small}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-xs text-neutral-400">Informação nutricional completa no verso da embalagem.</p>
       </section>
 
       {/* História (aparece quando houver texto oficial) */}
-      {BRAND.story && (
-        <section className="py-16" style={{ background: COLORS.mare, color: noite }}>
-          <div className="mx-auto max-w-3xl px-5">
-            <Eyebrow color={noite}>Nossa história</Eyebrow>
-            <p className="te-title mt-3 text-3xl">{BRAND.story}</p>
+      <section className="py-16" style={{ background: COLORS.mare, color: noite }}>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 md:grid-cols-[320px_1fr]">
+          <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-[2rem]" style={{ background: '#0b0b0b' }}>
+            <div className="aspect-[540/790] overflow-hidden">
+              <img src={asset(BRAND.story.image)} alt="Mascote Tio Eddy" loading="lazy" className="w-full" />
+            </div>
           </div>
-        </section>
-      )}
+          <div>
+            <Eyebrow color={noite}>Nossa história</Eyebrow>
+            <h2 className="te-title mt-2 text-3xl sm:text-5xl">{BRAND.story.title}</h2>
+            <div className="mt-5 space-y-3 text-lg font-bold">
+              {BRAND.story.paragraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+            <p className="te-title mt-6 text-2xl sm:text-3xl">{BRAND.story.closing}</p>
+          </div>
+        </div>
+      </section>
 
       {/* 3. Sabores */}
       <section className="py-16" style={{ background: '#111' }}>
@@ -260,6 +281,32 @@ export default function TioEddy() {
             </tbody>
           </table>
         </div>
+        {COMPETITORS_VERIFIED && (
+          <div className="mt-6 overflow-x-auto rounded-3xl border-2 border-white/15">
+            <table className="w-full text-left text-sm sm:text-base">
+              <caption className="p-3 text-left text-xs text-neutral-400">Por 100 g, conforme o rótulo de cada produto.</caption>
+              <thead className="bg-white/5">
+                <tr>
+                  <th className="p-3">Produto</th>
+                  <th className="p-3">kcal</th>
+                  <th className="p-3">Gorduras totais</th>
+                  <th className="p-3">Saturadas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-white/10 font-bold" style={{ color: dourado }}>
+                  <td className="p-3">Tio Eddy Azeite &amp; Sal</td><td className="p-3">340</td><td className="p-3">12 g</td><td className="p-3">1,8 g</td>
+                </tr>
+                {COMPETITORS.map((c) => (
+                  <tr key={c.name} className="border-t border-white/10">
+                    <td className="p-3">{c.name} <span className="text-xs text-neutral-400">{c.product}</span></td>
+                    <td className="p-3">{c.kcal}</td><td className="p-3">{c.gordura} g</td><td className="p-3">{c.saturada} g</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         <div className="mt-5 flex flex-wrap items-center gap-4 rounded-3xl p-5" style={{ background: COLORS.brasa }}>
           <p className="te-title text-4xl sm:text-5xl">50%</p>
           <p className="te-title max-w-xl text-xl sm:text-2xl">

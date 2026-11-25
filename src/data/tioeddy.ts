@@ -39,8 +39,18 @@ export const BRAND = {
   packLine: 'Snack assado de pão sírio de fermentação natural e azeite extravirgem',
   packPhrase: 'Leve, delicioso & muito crocante.',
   heroPhoto: 'tioeddy/fotos/picante-dip.jpg',
-  /** História da marca: preencha quando o texto oficial estiver disponível. Vazio = a seção não aparece. */
-  story: '' as string,
+  /** História da marca (texto do verso da embalagem). */
+  story: {
+    title: 'Simples e gostoso, como nos bons tempos',
+    paragraphs: [
+      'Tio Eddy é do tempo em que o sabor não era artificial, comida gostosa não fazia mal e bons ingredientes eram regra.',
+      'Em uma época de produtos ultraprocessados ou snacks “fit” sem graça, mostramos que dá pra ter o melhor dos dois mundos: sabor de verdade, com ingredientes naturais.',
+      'Comer bem não precisa ser complicado — pode ser leve, prático e cheio de sabor.',
+      'Tio Eddy é um snack feito para quem valoriza comida de verdade. Cada pacote é um convite pra viver melhor, comendo melhor.',
+    ],
+    closing: 'Como nos bons tempos! Tio Eddy. Valeu, vida!!',
+    image: 'tioeddy/fotos/mascote.jpg',
+  },
 }
 
 export const PRICE = 14.99
@@ -95,6 +105,30 @@ export const WHY = [
 ]
 
 export const PACK_SEAL = '50% menos gordura que um chips de batata tradicional'
+
+/** Tabela nutricional do Azeite & Sal, por 100 g (verso da embalagem). */
+export const NUTRI_100G = [
+  { big: '340', small: 'kcal' },
+  { big: '12 g', small: 'gorduras totais' },
+  { big: '1,8 g', small: 'gorduras saturadas' },
+  { big: '0 g', small: 'gorduras trans' },
+  { big: '2 g', small: 'fibras' },
+  { big: '6,9 g', small: 'proteínas' },
+]
+export const INGREDIENT_LIST =
+  'Pão sírio (farinha de trigo enriquecida com ferro e ácido fólico, açúcar, sal e conservante propionato de cálcio), azeite de oliva extra virgem, sal. Contém derivados de trigo. Contém glúten.'
+
+/**
+ * Comparativo com outras marcas, por 100 g.
+ * SÓ APARECE quando COMPETITORS_VERIFIED = true, depois de conferir cada valor no rótulo do produto.
+ * Preencha 'value' com o número do rótulo e 'product' com o produto exato (sabor e gramagem).
+ */
+export const COMPETITORS_VERIFIED = false
+export const COMPETITORS = [
+  { name: 'Gulão', product: '', kcal: '', gordura: '', saturada: '' },
+  { name: 'Cheetos', product: '', kcal: '', gordura: '', saturada: '' },
+  { name: 'Doritos', product: '', kcal: '', gordura: '', saturada: '' },
+]
 
 export const COMPARISON = [
   { label: 'Base do produto', eddy: 'Pão sírio de fermentação natural', other: 'Consulte o rótulo' },
