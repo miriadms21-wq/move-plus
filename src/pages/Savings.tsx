@@ -30,7 +30,7 @@ export default function Savings() {
   }))
 
   return (
-    <div className="page-in">
+    <div className="page-in min-w-0 overflow-x-hidden">
       <PageHeader title="Quanto custa esse hábito?" subtitle="Pequenos gastos. Grandes valores." icon={<Coins />} />
 
       <p className="mb-5 max-w-3xl text-lg font-semibold">
@@ -78,14 +78,14 @@ export default function Savings() {
       {/* Números em destaque */}
       <div className="grid gap-5 lg:grid-cols-3">
         {list.map((s) => (
-          <section key={s.id} className={`card p-5 ${list.length === 1 ? 'lg:col-span-3' : ''}`} style={{ borderLeft: `10px solid ${s.color}` }}>
+          <section key={s.id} className={`card min-w-0 p-4 sm:p-5 ${list.length === 1 ? 'lg:col-span-3' : ''}`} style={{ borderLeft: `10px solid ${s.color}` }}>
             <h2 className="text-xl font-extrabold">{s.name}</h2>
             <p className="mb-3 text-sm font-semibold text-tinta-suave">{brl(prices[s.id])} por pacote · {daysWeek} {daysWeek === 1 ? 'dia' : 'dias'} por semana</p>
-            <div className={`grid gap-3 ${list.length === 1 ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2'}`}>
+            <div className={`grid gap-3 ${list.length === 1 ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'}`}>
               {PERIODS.map((p) => (
-                <div key={p.id} className="rounded-2xl p-3" style={{ background: s.color + '55' }}>
+                <div key={p.id} className="min-w-0 rounded-2xl p-3" style={{ background: s.color + '55' }}>
                   <p className="text-xs font-bold uppercase text-tinta-suave">Gasto em {p.label}</p>
-                  <p className="text-2xl font-extrabold leading-tight">{brl(spent(prices[s.id], perDay, p.days))}</p>
+                  <p className="text-xl font-extrabold leading-tight sm:text-2xl">{brl(spent(prices[s.id], perDay, p.days))}</p>
                 </div>
               ))}
             </div>
@@ -94,15 +94,15 @@ export default function Savings() {
       </div>
 
       {/* Gráfico comparativo */}
-      <section className="card mt-5 p-5" aria-labelledby="grafico">
+      <section className="card mt-5 min-w-0 overflow-hidden p-3 sm:p-5" aria-labelledby="grafico">
         <h2 id="grafico" className="text-xl font-extrabold">Valor acumulado ao longo do tempo</h2>
         <p className="mb-3 text-sm font-semibold text-tinta-suave">O que parece pouco no dia a dia pode representar muito ao longo do tempo.</p>
         <div className="h-72 w-full" role="img" aria-label="Gráfico de barras com o gasto acumulado por prazo">
           <ResponsiveContainer>
-            <BarChart data={chart} margin={{ left: 0, right: 8 }}>
+            <BarChart data={chart} margin={{ left: -12, right: 4 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="prazo" tick={{ fontSize: 12 }} />
-              <YAxis tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)} mil` : String(v))} width={56} tick={{ fontSize: 12 }} />
+              <XAxis dataKey="prazo" tick={{ fontSize: 10 }} interval={0} />
+              <YAxis tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)} mil` : String(v))} width={48} tick={{ fontSize: 11 }} />
               <Tooltip formatter={(v) => brl(Number(v))} />
               <Legend />
               {list.map((s) => (
@@ -158,6 +158,7 @@ export default function Savings() {
       {/* Transição para o Tio Eddy */}
       <section className="mt-8 rounded-3xl border-2 border-tinta p-6 text-center sm:p-10" style={{ background: '#0b0b0b', color: '#fff' }}>
         <h2 className="text-3xl font-extrabold" style={{ color: '#FFC400' }}>E se você conhecesse outra opção?</h2>
+        <p className="mx-auto mt-2 max-w-xl text-lg font-extrabold text-white">Você já gasta com snacks. Que tal investir esse valor num lanche saudável, leve e feito com ingredientes naturais?</p>
         <p className="mx-auto mt-2 max-w-xl font-semibold text-neutral-300">
           Além de observar seus hábitos de consumo, vale conhecer outras propostas de snacks. Descubra o Tio Eddy e seus sabores.
         </p>

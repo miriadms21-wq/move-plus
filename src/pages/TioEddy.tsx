@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { ArrowLeft, Sparkles } from 'lucide-react'
-import { BRAND, COLORS, COMPARISON, FLAVORS, INGREDIENTS, PACK_SEAL, PRICE, type Flavor } from '../data/tioeddy'
-import { brl } from '../lib/snack'
+import { BRAND, COLORS, COMPARISON, FLAVORS, INGREDIENTS, PRICE, WHY, type Flavor } from '../data/tioeddy'
+import { PERIODS, brl, spent } from '../lib/snack'
 import { useApp } from '../state'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`
@@ -30,7 +31,7 @@ function BackButton() {
 }
 
 function Ticker() {
-  const items = ['Pão sírio', 'Azeite extra virgem', 'Assado', 'Leve, delicioso & muito crocante', 'Ingredientes naturais']
+  const items = ['Pão sírio', 'Azeite extravirgem', 'Assado', 'Leve, delicioso & muito crocante', 'Ingredientes naturais']
   const row = [...items, ...items]
   return (
     <div className="overflow-hidden py-3" style={{ background: dourado, color: noite }} aria-hidden="true">
@@ -53,11 +54,11 @@ function NutriBadges({ f }: { f: Flavor }) {
     [f.nutrition.proteinas, 'proteínas'],
   ]
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 gap-2">
       {items.map(([v, l]) => (
-        <div key={l} className="rounded-2xl bg-white px-1 py-2 text-center" style={{ color: noite }}>
-          <p className="te-title text-base sm:text-lg">{v}</p>
-          <p className="te-body text-[10px] font-bold uppercase leading-tight">{l}</p>
+        <div key={l} className="rounded-2xl bg-white px-2 py-2.5 text-center" style={{ color: noite }}>
+          <p className="te-title text-xl">{v}</p>
+          <p className="te-body text-[11px] font-bold uppercase leading-tight">{l}</p>
         </div>
       ))}
     </div>
@@ -73,19 +74,54 @@ function FlavorCard({ f }: { f: Flavor }) {
           src={asset(f.pack)}
           alt={`Embalagem Tio Eddy ${f.name} 80g`}
           loading="lazy"
-          className="absolute -bottom-10 right-4 w-28 rotate-3 rounded-2xl bg-white shadow-2xl"
+          className="absolute bottom-3 right-3 w-24 rotate-3 rounded-2xl bg-white shadow-2xl"
         />
       </div>
-      <div className="p-5 pt-6">
+      <div className="p-5">
         <h3 className="te-title text-3xl">{f.name}</h3>
-        <p className="te-body mt-2 max-w-[60%] text-sm font-bold">{f.description}</p>
-        <p className="te-body mt-4 text-xs font-bold uppercase tracking-widest opacity-70">Por pacote de 80 g · conforme embalagem</p>
+        <p className="te-body mt-2 text-sm font-bold">{f.description}</p>
+        <p className="te-body mt-4 text-xs font-bold uppercase tracking-widest opacity-70">Por pacote de 80 g</p>
         <div className="mt-2">
           <NutriBadges f={f} />
         </div>
         <p className="te-title mt-5 text-4xl">{brl(f.price ?? PRICE)}</p>
       </div>
     </article>
+  )
+}
+
+function Invest() {
+  const [days, setDays] = useState(7)
+  const perDay = days / 7
+  return (
+    <section className="py-16" style={{ background: COLORS.mare, color: noite }}>
+      <div className="mx-auto max-w-6xl px-5">
+        <Eyebrow color={noite}>Mesmo hábito, outra escolha</Eyebrow>
+        <h2 className="te-title mt-2 text-3xl sm:text-5xl">Quanto custa um lanche saudável?</h2>
+        <p className="mt-3 max-w-2xl text-lg font-bold">
+          Snack todo mundo compra. A diferença está no que vai no pacote: pão sírio assado, azeite extravirgem e ingredientes naturais. Vale cada centavo investido no seu lanche.
+        </p>
+        <label className="mt-6 inline-block text-sm font-bold">
+          Quantos dias por semana você lancha?
+          <select value={days} onChange={(e) => setDays(Number(e.target.value))} className="mt-1 block rounded-xl border-2 border-black bg-white px-3 py-2 text-lg font-bold">
+            {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+              <option key={d} value={d}>
+                {d} {d === 1 ? 'dia' : 'dias'}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          {PERIODS.map((p) => (
+            <div key={p.id} className="min-w-0 rounded-3xl p-4" style={{ background: noite, color: '#fff' }}>
+              <p className="te-body text-[11px] font-bold uppercase tracking-wider" style={{ color: dourado }}>{p.label}</p>
+              <p className="te-title mt-1 text-2xl">{brl(spent(PRICE, perDay, p.days))}</p>
+            </div>
+          ))}
+        </div>
+        <p className="te-title mt-8 text-2xl sm:text-4xl">Gaste com o que faz bem. Escolha Tio Eddy.</p>
+      </div>
+    </section>
   )
 }
 
@@ -101,7 +137,7 @@ export default function TioEddy() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 md:grid-cols-2 md:py-20">
           <div>
-            <Eyebrow>Snack assado · pão sírio · azeite extra virgem</Eyebrow>
+            <Eyebrow>Snack assado · pão sírio · azeite extravirgem</Eyebrow>
             <h1 className="te-title mt-4 text-4xl sm:text-6xl">
               Tio Eddy:
               <br />
@@ -129,6 +165,17 @@ export default function TioEddy() {
         </div>
       </section>
       <Ticker />
+
+      <section className="mx-auto max-w-6xl px-5 pt-14">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {WHY.map((w, i) => (
+            <div key={w.big} className="rounded-3xl p-4 sm:p-5" style={{ background: [COLORS.mare, COLORS.brasa, COLORS.alecrim, dourado][i], color: i === 1 ? '#fff' : noite }}>
+              <p className="te-title break-words text-xl sm:text-4xl">{w.big}</p>
+              <p className="te-body mt-1 text-sm font-bold leading-snug">{w.small}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* 2. Ingredientes */}
       <section className="mx-auto max-w-6xl px-5 py-16">
@@ -194,10 +241,10 @@ export default function TioEddy() {
           Cada snack tem a sua proposta. Olhar a composição e a lista de ingredientes ajuda a escolher com mais informação.
         </p>
         <div className="mt-8 overflow-x-auto rounded-3xl border-2 border-white/15">
-          <table className="w-full min-w-[560px] text-left">
+          <table className="w-full text-left text-sm sm:text-base">
             <thead className="bg-white/5 text-sm">
               <tr>
-                <th className="p-4 text-neutral-400">Critério</th>
+                <th className="p-3 text-neutral-400 sm:p-4">Critério</th>
                 <th className="te-title p-4 text-lg" style={{ color: dourado }}>Tio Eddy</th>
                 <th className="p-4 text-neutral-300">Outros snacks</th>
               </tr>
@@ -205,9 +252,9 @@ export default function TioEddy() {
             <tbody>
               {COMPARISON.map((r) => (
                 <tr key={r.label} className="border-t border-white/10">
-                  <th scope="row" className="p-4 font-bold">{r.label}</th>
-                  <td className="p-4 font-bold">{r.eddy}</td>
-                  <td className="p-4 text-neutral-400">{r.other}</td>
+                  <th scope="row" className="p-3 font-bold sm:p-4">{r.label}</th>
+                  <td className="p-3 font-bold sm:p-4">{r.eddy}</td>
+                  <td className="p-3 text-neutral-400 sm:p-4">{r.other}</td>
                 </tr>
               ))}
             </tbody>
@@ -215,14 +262,16 @@ export default function TioEddy() {
         </div>
         <div className="mt-5 flex flex-wrap items-center gap-4 rounded-3xl p-5" style={{ background: COLORS.brasa }}>
           <p className="te-title text-4xl sm:text-5xl">50%</p>
-          <p className="te-body max-w-md text-sm font-bold sm:text-base">
-            Selo impresso na embalagem: “{PACK_SEAL}”. Alegação da marca, conforme a embalagem.
+          <p className="te-title max-w-xl text-xl sm:text-2xl">
+            menos gordura que um chips de batata tradicional.
           </p>
         </div>
         <p className="mt-3 flex items-center gap-2 text-xs text-neutral-400">
-          <Sparkles size={14} /> Comparação informativa, sem juízo de valor. Confira sempre o rótulo de cada produto.
+          <Sparkles size={14} /> Confira sempre o rótulo de cada produto e escolha o que faz sentido para você.
         </p>
       </section>
+
+      <Invest />
 
       <footer className="border-t border-white/10 px-5 py-12 text-center">
         <img src={asset('tioeddy/logo/L-RGB-2.svg')} alt="Tio Eddy" className="mx-auto mb-6 h-20 w-auto" />

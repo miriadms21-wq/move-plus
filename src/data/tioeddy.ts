@@ -36,7 +36,7 @@ export const BRAND = {
   heroText:
     'Feito à base de pão sírio e azeite extravirgem, o Tio Eddy apresenta uma proposta diferente para quem gosta de snacks e quer conhecer novas opções.',
   /** Texto da embalagem. */
-  packLine: 'Snack assado de pão sírio de fermentação natural e azeite extra virgem',
+  packLine: 'Snack assado de pão sírio de fermentação natural e azeite extravirgem',
   packPhrase: 'Leve, delicioso & muito crocante.',
   heroPhoto: 'tioeddy/fotos/picante-dip.jpg',
   /** História da marca: preencha quando o texto oficial estiver disponível. Vazio = a seção não aparece. */
@@ -47,14 +47,14 @@ export const PRICE = 14.99
 
 export const INGREDIENTS = [
   { name: 'Pão sírio', description: 'De fermentação natural, assado. É a base de todos os sabores.', photo: 'tioeddy/fotos/azeite-prato.jpg' },
-  { name: 'Azeite extra virgem', description: 'O azeite que acompanha o pão sírio em cada pacote.', photo: 'tioeddy/fotos/azeite-dip.jpg' },
+  { name: 'Azeite extravirgem', description: 'O azeite que acompanha o pão sírio em cada pacote.', photo: 'tioeddy/fotos/azeite-dip.jpg' },
 ]
 
 export const FLAVORS: Flavor[] = [
   {
     id: 'azeite-sal',
     name: 'Azeite & Sal',
-    description: 'O sabor mais simples: pão sírio assado, azeite extra virgem e sal.',
+    description: 'O sabor mais simples: pão sírio assado, azeite extravirgem e sal.',
     color: COLORS.mare,
     ink: COLORS.noite,
     logo: 'tioeddy/logo/L-RGB-5.svg',
@@ -87,11 +87,18 @@ export const FLAVORS: Flavor[] = [
 ]
 
 /** Selo impresso nas embalagens (alegação da marca). */
+export const WHY = [
+  { big: '50%', small: 'menos gordura que um chips de batata tradicional' },
+  { big: '0 g', small: 'de gordura trans por pacote' },
+  { big: 'Assado', small: 'pão sírio de fermentação natural' },
+  { big: 'Natural', small: 'ingredientes naturais, leve e muito crocante' },
+]
+
 export const PACK_SEAL = '50% menos gordura que um chips de batata tradicional'
 
 export const COMPARISON = [
   { label: 'Base do produto', eddy: 'Pão sírio de fermentação natural', other: 'Consulte o rótulo' },
   { label: 'Como é feito', eddy: 'Assado', other: 'Consulte o rótulo' },
-  { label: 'Gordura em destaque', eddy: 'Azeite extra virgem', other: 'Consulte o rótulo' },
-  { label: 'Gordura trans (por pacote)', eddy: '0 g, conforme embalagem', other: 'Consulte o rótulo' },
+  { label: 'Gordura em destaque', eddy: 'Azeite extravirgem', other: 'Consulte o rótulo' },
+  { label: 'Gordura trans (por pacote)', eddy: '0 g por pacote', other: 'Consulte o rótulo' },
 ]
